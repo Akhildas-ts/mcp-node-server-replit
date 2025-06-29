@@ -1,0 +1,104 @@
+// Save this as index.js in your mcp-agent-chat directory
+const serverInfo = {
+  name: "MCP Agent Chat",
+  version: "1.0.0",
+  description: "Chat agent with vector search capabilities",
+  vendor: {
+    name: "Your Organization"
+  },
+  capabilities: {
+    chat: true,
+    vectorSearch: true,
+    indexRepository: true
+  }
+};
+
+// Send server info notification immediately
+process.stdout.write(JSON.stringify({
+  jsonrpc: "2.0",
+  method: "serverInfo",
+  params: { serverInfo }
+}) + "\n");
+
+// Define offerings
+const offerings = {
+  tools: [
+    {
+      id: "chat",
+      name: "Chat",
+      description: "Process a chat message with repository context",
+      parameters: {
+        type: "object",
+        required: ["message"],
+        properties: {
+          message: { type: "string", description: "The message to process" },
+          repository: { type: "string", description: "Repository to use for context" },
+          context: { type: "array", items: { type: "string" }, description: "Additional context" }
+        }
+      }
+    },
+    {
+      id: "vectorSearch",
+      name: "Vector Search",
+      description: "Search for code in a repository",
+      parameters: {
+        type: "object",
+        required: ["query", "repository"],
+        properties: {
+          query: { type: "string", description: "The search query" },
+          repository: { type: "string", description: "Repository to search in" },
+          limit: { type: "number", description: "Maximum results to return" }
+        }
+      }
+    },
+    {
+      id: "indexRepository",
+      name: "Index Repository",
+      description: "Index a repository for search",
+      parameters: {
+        type: "object",
+        required: ["repository"],
+        properties: {
+          repository: { type: "string", description: "Repository URL to index" },
+          branch: { type: "string", description: "Branch to index" }
+        }
+      }
+    }
+  ],
+  resources: [],
+  resourceTemplates: []
+};
+
+// Set up simple stdin reader
+process.stdin.setEncoding('utf8');
+process.stdin.on('data', function(data) {
+  try {
+    const requests = data.toString().trim().split('\n');
+    
+    for (const requestStr of requests) {
+      if (!requestStr.trim()) continue;
+      
+      const request = JSON.parse(requestStr);
+      
+      if (request.method === 'listOfferings' && request.id) {
+        process.stdout.write(JSON.stringify({
+          jsonrpc: "2.0",
+          result: offerings,
+          id: request.id
+        }) + "\n");
+      } else if (request.id) {
+        // Generic response for any other method
+        process.stdout.write(JSON.stringify({
+          jsonrpc: "2.0",
+          result: { status: "success" },
+          id: request.id
+        }) + "\n");
+      }
+    }
+  } catch (err) {
+    // Ignore errors, just keep running
+  }
+});
+
+// Keep process alive
+setInterval(() => {}, 10000);

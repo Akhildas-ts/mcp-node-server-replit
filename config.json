@@ -1,0 +1,5 @@
+{
+    "autoStart": true,
+    "port": 3000,
+    "goServerUrl": "http://localhost:8081"
+  }

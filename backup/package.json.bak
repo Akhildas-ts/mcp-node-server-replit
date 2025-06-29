@@ -1,0 +1,20 @@
+{
+  "name": "mcp-agent-chat",
+  "version": "1.0.0",
+  "description": "MCP Agent Chat Server with STDIO Support",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "mcp-agent-chat": "./index.js"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "stdio": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2",
+    "ws": "^8.14.2"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "mcp-agent-chat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2",
+    "socket.io": "^4.8.1",
+    "zod": "^3.25.61"
+  },
+  "description": "",
+  "type": "module"
+}
